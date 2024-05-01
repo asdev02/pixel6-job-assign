@@ -11,7 +11,7 @@ document.getElementById('calculateEMIButton').addEventListener('click', function
 });
 
 document.getElementById('loanForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
     const fullNameInput = document.getElementById('fullName');
     const emailInput = document.getElementById('email');
     const panInput = document.getElementById('pan');
@@ -21,6 +21,9 @@ document.getElementById('loanForm').addEventListener('submit', function(event) {
     const panError = document.getElementById('panError');
     const loanAmountError = document.getElementById('loanAmountError');
     const emiInput = document.getElementById('emi');
+
+
+    // I have performed form Validation here which includes name, email, pan and loan amount. For otp i have created simple function generateRandomNumber which do not require any library.
 
     function validateForm() {
         let isValid = true;
@@ -34,7 +37,6 @@ document.getElementById('loanForm').addEventListener('submit', function(event) {
             fullNameError.textContent = "";
         }
 
-        // Email Validation
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(emailInput.value)) {
             emailError.textContent = "Invalid email format.";
@@ -43,7 +45,6 @@ document.getElementById('loanForm').addEventListener('submit', function(event) {
             emailError.textContent = "";
         }
 
-        // PAN Validation
         const panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
         if (!panPattern.test(panInput.value)) {
             panError.textContent = "PAN must be in the format: ABCDE1234F";
@@ -52,7 +53,6 @@ document.getElementById('loanForm').addEventListener('submit', function(event) {
             panError.textContent = "";
         }
 
-        // Loan Amount Validation
         if (isNaN(loanAmountInput.value) || loanAmountInput.value <= 0 || loanAmountInput.value.length > 9) {
             loanAmountError.textContent = "Loan amount must be a number greater than 0 and less than 10 digits.";
             isValid = false;
@@ -64,9 +64,7 @@ document.getElementById('loanForm').addEventListener('submit', function(event) {
     }
 
     if (validateForm()) {
-        // Generate demo OTP
         const demoOTP = generateRandomNumber();
-        // Redirect to confirmation page with form data and demo OTP
         const firstName = fullNameInput.value.split(' ')[0];
         const email = emailInput.value;
         const url = `confirm.html?firstName=${firstName}&email=${email}&loanAmount=${loanAmountInput.value}&otp=${demoOTP}`;
@@ -74,7 +72,6 @@ document.getElementById('loanForm').addEventListener('submit', function(event) {
     }
 });
 
-// Function to generate a random 4-digit number
 function generateRandomNumber() {
     return Math.floor(1000 + Math.random() * 9000);
 }

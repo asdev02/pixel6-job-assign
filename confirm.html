@@ -70,7 +70,7 @@
         <div id="errorMessage" class="error"></div>
     </div>
     <div id="validationSuccess" style="display: none;">
-        <p>Validation Successful!</p>
+        <p>Validation Successful! Your loan is being processed.</p>
         <p>Do you want to go back to the main page?</p>
         <button type="button" id="goBackButton">Yes</button>
     </div>
@@ -80,6 +80,8 @@
 </div>
 
 <script>
+
+
     // Retrieve form values from the query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const firstName = urlParams.get('firstName');
@@ -91,10 +93,9 @@
     document.getElementById('firstName').textContent = firstName;
     document.getElementById('userEmail').textContent = userEmail;
 
-    // Display demo OTP
     document.getElementById('otp').value = demoOTP;
 
-    // Validation logic
+    // Performed Validation logic, if user enters 3 wrong otp it will show error message.
     let attempts = 0;
     const maxAttempts = 3;
     document.getElementById('validateButton').addEventListener('click', function() {
@@ -118,7 +119,7 @@
     });
 
     document.getElementById('goBackButton').addEventListener('click', function() {
-        window.location.href = 'index.html'; // Redirect to the main page
+        window.location.href = 'index.html';
     });
 </script>
 </body>
