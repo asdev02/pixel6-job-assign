@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmation Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        text-align: center;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .error {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Confirmation Page</h2>
+    <div id="otpForm">
+        <p>Dear <span id="firstName"></span>,</p>
+        <p>Thank you for your inquiry. A 4 digit verification number has been sent to your email: <span id="userEmail"></span>, please enter it in the following box and submit for confirmation:</p>
+        <div class="form-group">
+            <label for="otp">OTP:</label>
+            <input type="text" id="otp" name="otp" maxlength="4">
+        </div>
+        <button type="button" id="validateButton">Validate</button>
+        <div id="errorMessage" class="error"></div>
+    </div>
+    <div id="validationSuccess" style="display: none;">
+        <p>Validation Successful!</p>
+        <p>Do you want to go back to the main page?</p>
+        <button type="button" id="goBackButton">Yes</button>
+    </div>
+    <div id="validationFailed" style="display: none;">
+        <p id="attemptsLeft" class="error"></p>
+    </div>
+</div>
+
+<script>
+    // Retrieve form values from the query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const firstName = urlParams.get('firstName');
+    const userEmail = urlParams.get('email');
+    const loanAmount = urlParams.get('loanAmount');
+    const demoOTP = urlParams.get('otp');
+
+    // Update UI with retrieved values
+    document.getElementById('firstName').textContent = firstName;
+    document.getElementById('userEmail').textContent = userEmail;
+
+    // Display demo OTP
+    document.getElementById('otp').value = demoOTP;
+
+    // Validation logic
+    let attempts = 0;
+    const maxAttempts = 3;
+    document.getElementById('validateButton').addEventListener('click', function() {
+        const enteredOTP = document.getElementById('otp').value;
+        if (enteredOTP === demoOTP) {
+            document.getElementById('otpForm').style.display = 'none';
+            document.getElementById('validationSuccess').style.display = 'block';
+        } else {
+            attempts++;
+            const attemptsLeft = maxAttempts - attempts;
+            if (attemptsLeft > 0) {
+                document.getElementById('errorMessage').textContent = `Incorrect OTP. ${attemptsLeft} attempts left.`;
+            } else {
+                document.getElementById('errorMessage').textContent = `Maximum attempts exceeded.`;
+            }
+            if (attempts >= maxAttempts) {
+                document.getElementById('otpForm').style.display = 'none';
+                document.getElementById('validationFailed').style.display = 'block';
+            }
+        }
+    });
+
+    document.getElementById('goBackButton').addEventListener('click', function() {
+        window.location.href = 'index.html'; // Redirect to the main page
+    });
+</script>
+</body>
+</html>
